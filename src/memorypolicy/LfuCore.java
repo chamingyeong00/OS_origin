@@ -1,97 +1,84 @@
+// LfuCore.java
 package memorypolicy;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class LfuCore implements CorePolicy {
-    private int frameSize;
-    private Node[] cacheList;
-    private int curSize = 0;
-    private int curTime = 0;
-    private List<Page> pageHistory;
+    private final int p_frame_size;
+    private final List<Page> frame_window;
+    private final List<Page> pageHistory;
+    private final Map<Character, Integer> frequencyMap;
 
     private int hit = 0;
     private int fault = 0;
     private int migration = 0;
+    private int cursor = 0;
 
-    private static class Node {
-        int key;
-        int count;
-        int timeStamp;
-
-        Node(int key, int timeStamp) {
-        this.key = key;
-        this.count = 1;      // 새 페이지가 들어오면 참조 횟수는 1로 초기화
-        this.timeStamp = timeStamp;
-    }
-}
-
-    public LfuCore(int frameSize) {
-        this.frameSize = frameSize;
-        this.cacheList = new Node[frameSize];
+    public LfuCore(int frame_size) {
+        this.p_frame_size = frame_size;
+        this.frame_window = new ArrayList<>();
         this.pageHistory = new ArrayList<>();
+        this.frequencyMap = new HashMap<>();
     }
 
     @Override
     public Page.STATUS operate(char data) {
-        curTime++;
         Page newPage = new Page();
         newPage.pid = Page.CREATE_ID++;
         newPage.data = data;
 
-        // 현재 프레임에 데이터가 있는지 확인 (Hit 여부 판단)
-        int foundIndex = -1;
-        for (int i = 0; i < curSize; i++) {
-            if (cacheList[i] != null && cacheList[i].key == data) {
-                foundIndex = i;
+        boolean found = false;
+        int index = -1;
+
+        for (int i = 0; i < frame_window.size(); i++) {
+            if (frame_window.get(i).data == data) {
+                found = true;
+                index = i;
                 break;
             }
         }
 
-        if (foundIndex != -1) {
-            // HIT: 해당 페이지 참조 횟수 증가, 타임스탬프 갱신
-            cacheList[foundIndex].count++;
-            cacheList[foundIndex].timeStamp = curTime;
-            newPage.status = Page.STATUS.HIT;
+        if (found) {
             hit++;
-            newPage.loc = foundIndex + 1;
+            newPage.status = Page.STATUS.HIT;
+            newPage.loc = index + 1;
+            frequencyMap.put(data, frequencyMap.get(data) + 1);
         } else {
-            // MISS: 프레임 여유 있으면 새 페이지 추가
-            if (curSize < frameSize) {
-                cacheList[curSize++] = new Node(data, curTime);
-                newPage.status = Page.STATUS.PAGEFAULT;
-                fault++;
-                newPage.loc = curSize;
-            } else {
-                // 프레임 꽉 찬 경우 교체 대상 찾기 (최소 참조 횟수 & 가장 오래된 것)
-                int minCount = Integer.MAX_VALUE;
-                int minTime = Integer.MAX_VALUE;
-                int minIndex = -1;
+            fault++;
+            newPage.loc = frame_window.size() + 1;
 
-                for (int i = 0; i < curSize; i++) {
-                    if (cacheList[i].count < minCount) {
-                        minCount = cacheList[i].count;
-                        minTime = cacheList[i].timeStamp;
-                        minIndex = i;
-                    } else if (cacheList[i].count == minCount) {
-                        if (cacheList[i].timeStamp < minTime) {
-                            minTime = cacheList[i].timeStamp;
-                            minIndex = i;
-                        }
+            if (frame_window.size() >= p_frame_size) {
+                char lfuData = frame_window.get(0).data;
+                for (Page p : frame_window) {
+                    if (frequencyMap.get(p.data) < frequencyMap.get(lfuData)) {
+                        lfuData = p.data;
                     }
                 }
-                // 교체: 기존 Node 값 직접 갱신
-                cacheList[minIndex].key = data;
-                cacheList[minIndex].count = 1;  // 새 페이지 참조 횟수는 1로 초기화
-                cacheList[minIndex].timeStamp = curTime;
 
-                newPage.status = Page.STATUS.MIGRATION;
+                Iterator<Page> it = frame_window.iterator();
+                while (it.hasNext()) {
+                    if (it.next().data == lfuData) {
+                        it.remove();
+                        break;
+                    }
+                }
+
+                frequencyMap.remove(lfuData);
                 migration++;
-                fault++;
-                newPage.loc = minIndex + 1;
+                newPage.status = Page.STATUS.MIGRATION;
+            } else {
+                newPage.status = Page.STATUS.PAGEFAULT;
             }
+
+            frame_window.add(newPage);
+            frequencyMap.put(data, 1);
         }
 
+        frame_window.sort(Comparator
+                .comparingInt((Page p) -> frequencyMap.get(p.data))
+                .thenComparingInt(p -> p.pid));
+
+        cursor = frame_window.size();
         pageHistory.add(newPage);
         return newPage.status;
     }
@@ -104,4 +91,20 @@ public class LfuCore implements CorePolicy {
     public int getMigrationCount() { return migration; }
     @Override
     public List<Page> getPageHistory() { return pageHistory; }
+
+    // 🔽 추가 구현
+    @Override
+    public Queue<Page> getCurrentFrames() {
+        return new LinkedList<>(frame_window);
+    }
+
+    @Override
+    public int getCursor() {
+        return cursor;
+    }
+
+    @Override
+    public int getFrameSize() {
+        return p_frame_size;
+    }
 }

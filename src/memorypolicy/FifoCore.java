@@ -1,12 +1,13 @@
+// FifoCore.java
 package memorypolicy;
 
 import java.util.*;
 
 public class FifoCore implements CorePolicy {
     private int cursor = 0;
-    private int p_frame_size;
-    private Queue<Page> frame_window;
-    private List<Page> pageHistory;
+    private final int p_frame_size;
+    private final Queue<Page> frame_window;
+    private final List<Page> pageHistory;
 
     private int hit = 0;
     private int fault = 0;
@@ -69,4 +70,20 @@ public class FifoCore implements CorePolicy {
     public int getMigrationCount() { return migration; }
     @Override
     public List<Page> getPageHistory() { return pageHistory; }
+
+    // 🔽 추가 구현
+    @Override
+    public Queue<Page> getCurrentFrames() {
+        return new LinkedList<>(frame_window);
+    }
+
+    @Override
+    public int getCursor() {
+        return cursor;
+    }
+
+    @Override
+    public int getFrameSize() {
+        return p_frame_size;
+    }
 }

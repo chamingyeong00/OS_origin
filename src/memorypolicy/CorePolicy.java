@@ -1,15 +1,18 @@
+// CorePolicy.java
 package memorypolicy;
 
 import java.util.List;
+import java.util.Queue;
 
 public interface CorePolicy {
-    enum STATUS {
-        HIT, PAGEFAULT, MIGRATION
-    }
-
     Page.STATUS operate(char data);
+
     int getHitCount();
     int getFaultCount();
     int getMigrationCount();
     List<Page> getPageHistory();
+
+    Queue<Page> getCurrentFrames();
+    int getCursor();
+    int getFrameSize();
 }
