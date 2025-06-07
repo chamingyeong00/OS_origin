@@ -43,8 +43,7 @@ public class Form1 extends JFrame {
         JLabel lbPolicy = new JLabel("Policy");
         lbPolicy.setBounds(20, 10, 50, 25);
         add(lbPolicy);
-
-        comboPolicy = new JComboBox<>(new String[]{"FIFO", "LFU", "ESC"});
+        comboPolicy = new JComboBox<>(new String[]{"FIFO", "LFU", "SC"});
         comboPolicy.setBounds(20, 40, 120, 30);
         add(comboPolicy);
 
@@ -84,10 +83,15 @@ public class Form1 extends JFrame {
         lbPageFaultRatio.setBounds(1080, 680, 100, 30);
         add(lbPageFaultRatio);
 
+        // drawPanel 생성 및 JScrollPane에 넣기
         drawPanel = new DrawPanel();
-        drawPanel.setBounds(20, 100, 850, 570);
-        drawPanel.setBackground(Color.BLACK);
-        add(drawPanel);
+        drawPanel.setPreferredSize(new Dimension(1500, 570)); // 가로 넉넉히 크게 설정
+
+        JScrollPane scrollPane = new JScrollPane(drawPanel);
+        scrollPane.setBounds(20, 100, 850, 570);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        add(scrollPane);
 
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
@@ -171,7 +175,7 @@ public class Form1 extends JFrame {
         switch (policyStr) {
             case "FIFO" -> core = new FifoCore(frameSize);
             case "LFU" -> core = new LfuCore(frameSize);
-            case "ESC" -> core = new EscCore(frameSize);
+            case "SC" -> core = new ScCore(frameSize);
             default -> {
                 JOptionPane.showMessageDialog(this, "Unsupported policy");
                 return;
