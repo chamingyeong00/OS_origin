@@ -45,7 +45,7 @@ public class Form1 extends JFrame {
         JLabel lbPolicy = new JLabel("Policy");
         lbPolicy.setBounds(20, 10, 50, 25);
         add(lbPolicy);
-        comboPolicy = new JComboBox<>(new String[]{"FIFO", "LFU", "SC"});
+        comboPolicy = new JComboBox<>(new String[]{"FIFO", "LFU", "SC", "LFU-SC"});
         comboPolicy.setBounds(20, 40, 120, 30);
         add(comboPolicy);
 
@@ -87,12 +87,12 @@ public class Form1 extends JFrame {
 
         // drawPanel 생성 및 JScrollPane에 넣기
         drawPanel = new DrawPanel();
-        drawPanel.setPreferredSize(new Dimension(1500, 570)); // 가로 넉넉히 크게 설정
+        drawPanel.setPreferredSize(new Dimension(1500, 35 * 20)); // ← 예비 높이 설정 (세로 스크롤 위해 큼직하게)
 
         JScrollPane scrollPane = new JScrollPane(drawPanel);
         scrollPane.setBounds(20, 100, 850, 570);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED); // ← 이거로 수정!
         add(scrollPane);
 
         JPanel rightPanel = new JPanel();
@@ -178,6 +178,7 @@ public class Form1 extends JFrame {
             case "FIFO" -> core = new FifoCore(frameSize);
             case "LFU" -> core = new LfuCore(frameSize);
             case "SC" -> core = new ScCore(frameSize);
+            case "LFU-SC" -> core = new LfuScHybridCore(frameSize);
             default -> {
                 JOptionPane.showMessageDialog(this, "Unsupported policy");
                 return;
@@ -277,21 +278,6 @@ public class Form1 extends JFrame {
             super.paintComponent(g);
 
             if (core == null) return;
-
-//            System.out.println("====== DEBUG DRAW START ======");
-//            System.out.println("Frame Size (core.getFrameSize()) = " + core.getFrameSize());
-//            System.out.println("Cursor (core.getCursor()) = " + core.getCursor());
-//            System.out.println("Current Frames (core.getCurrentFrames()) = ");
-//            for (Page p : core.getCurrentFrames()) {
-//                System.out.printf("  [pid=%d, data=%c, loc=%d, status=%s]\n", p.pid, p.data, p.loc, p.status);
-//            }
-//            System.out.println("Page History (core.getPageHistory()) = ");
-//            for (Page p : core.getPageHistory()) {
-//                System.out.printf("  [Step] pid=%d, data=%c, loc=%d, status=%s\n", p.pid, p.data, p.loc, p.status);
-//            }
-//            System.out.println("====== DEBUG DRAW END ======");
-
-            // 기존 코드 유지
             Graphics2D g2d = (Graphics2D) g;
             g2d.setColor(Color.BLACK);
             g2d.fillRect(0, 0, getWidth(), getHeight());
@@ -356,9 +342,6 @@ public class Form1 extends JFrame {
                 case MIGRATION -> new Color(128, 0, 128);
                 case PAGEFAULT -> Color.RED;
             };
-            // 디버깅 로그
-//            System.out.printf("  → Drawing %s box at (%d, %d), size=%d\n", colorToString(color), x, y, size);
-
             g.setColor(color);
             g.fillRect(x, y, size, size);
         }
