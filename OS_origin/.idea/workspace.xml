@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="973eca61-ab5f-4061-8ea9-a23553f1e71b" name="Changes" comment="Changes">
-      <change afterPath="$PROJECT_DIR$/src/memorypolicy/LfuScHybridCore.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/memorypolicy/Form1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/memorypolicy/Form1.java" afterDir="false" />
-    </list>
+    <list default="true" id="973eca61-ab5f-4061-8ea9-a23553f1e71b" name="Changes" comment="Changes" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -111,7 +107,7 @@
       <workItem from="1749370279719" duration="120000" />
       <workItem from="1749620735977" duration="6267000" />
       <workItem from="1749630786954" duration="2730000" />
-      <workItem from="1749638577869" duration="3846000" />
+      <workItem from="1749638577869" duration="3981000" />
     </task>
     <servers />
   </component>
