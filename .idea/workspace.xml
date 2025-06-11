@@ -6,12 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="973eca61-ab5f-4061-8ea9-a23553f1e71b" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/memorypolicy/CorePolicy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/memorypolicy/CorePolicy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/memorypolicy/DrawPanel.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/memorypolicy/FifoCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/memorypolicy/FifoCore.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/memorypolicy/Form1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/memorypolicy/Form1.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/memorypolicy/LfuCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/memorypolicy/LfuCore.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/memorypolicy/ScCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/memorypolicy/ScCore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/memorypolicy/Page.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/memorypolicy/Page.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +48,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/chamingyeong/GitHub/OS_origin&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/chamingyeong/GitHub/OS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -114,6 +111,8 @@
       <workItem from="1749299431810" duration="6986000" />
       <workItem from="1749370279719" duration="120000" />
       <workItem from="1749620735977" duration="6267000" />
+      <workItem from="1749630786954" duration="2730000" />
+      <workItem from="1749638577869" duration="2045000" />
     </task>
     <servers />
   </component>

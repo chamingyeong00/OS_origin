@@ -278,18 +278,18 @@ public class Form1 extends JFrame {
 
             if (core == null) return;
 
-            System.out.println("====== DEBUG DRAW START ======");
-            System.out.println("Frame Size (core.getFrameSize()) = " + core.getFrameSize());
-            System.out.println("Cursor (core.getCursor()) = " + core.getCursor());
-            System.out.println("Current Frames (core.getCurrentFrames()) = ");
-            for (Page p : core.getCurrentFrames()) {
-                System.out.printf("  [pid=%d, data=%c, loc=%d, status=%s]\n", p.pid, p.data, p.loc, p.status);
-            }
-            System.out.println("Page History (core.getPageHistory()) = ");
-            for (Page p : core.getPageHistory()) {
-                System.out.printf("  [Step] pid=%d, data=%c, loc=%d, status=%s\n", p.pid, p.data, p.loc, p.status);
-            }
-            System.out.println("====== DEBUG DRAW END ======");
+//            System.out.println("====== DEBUG DRAW START ======");
+//            System.out.println("Frame Size (core.getFrameSize()) = " + core.getFrameSize());
+//            System.out.println("Cursor (core.getCursor()) = " + core.getCursor());
+//            System.out.println("Current Frames (core.getCurrentFrames()) = ");
+//            for (Page p : core.getCurrentFrames()) {
+//                System.out.printf("  [pid=%d, data=%c, loc=%d, status=%s]\n", p.pid, p.data, p.loc, p.status);
+//            }
+//            System.out.println("Page History (core.getPageHistory()) = ");
+//            for (Page p : core.getPageHistory()) {
+//                System.out.printf("  [Step] pid=%d, data=%c, loc=%d, status=%s\n", p.pid, p.data, p.loc, p.status);
+//            }
+//            System.out.println("====== DEBUG DRAW END ======");
 
             // 기존 코드 유지
             Graphics2D g2d = (Graphics2D) g;
@@ -337,6 +337,7 @@ public class Form1 extends JFrame {
 
         }
 
+
         private String colorToString(Color color) {
             if (Color.GREEN.equals(color)) return "GREEN";
             if (Color.RED.equals(color)) return "RED";
@@ -356,7 +357,7 @@ public class Form1 extends JFrame {
                 case PAGEFAULT -> Color.RED;
             };
             // 디버깅 로그
-            System.out.printf("  → Drawing %s box at (%d, %d), size=%d\n", colorToString(color), x, y, size);
+//            System.out.printf("  → Drawing %s box at (%d, %d), size=%d\n", colorToString(color), x, y, size);
 
             g.setColor(color);
             g.fillRect(x, y, size, size);

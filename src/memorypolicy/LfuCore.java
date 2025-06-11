@@ -80,8 +80,10 @@ public class LfuCore implements CorePolicy {
                 newPage.status = Page.STATUS.PAGEFAULT;
             }
 
-            frame_window.add(newPage);
-            frequencyMap.put(data, 1);
+            if (!containsData(frame_window, data)) {
+                frame_window.add(newPage);
+                frequencyMap.put(data, 1);
+            }
         }
 
         frame_window.sort(Comparator
@@ -122,37 +124,28 @@ public class LfuCore implements CorePolicy {
     @Override
     public List<Page> getFrameStateAtStep(int step) {
         Map<Character, Integer> freq = new HashMap<>();
-        List<Page> current = new ArrayList<>();
+        LinkedHashMap<Character, Page> currentMap = new LinkedHashMap<>();
 
         for (int i = 0; i <= step && i < pageHistory.size(); i++) {
             Page p = pageHistory.get(i);
             freq.put(p.data, freq.getOrDefault(p.data, 0) + 1);
-
-            // 중복 페이지 무시
-            if (current.stream().anyMatch(pg -> pg.data == p.data)) continue;
-
-            if (current.size() >= p_frame_size) {
-                current.sort(Comparator
-                        .comparingInt((Page pg) -> freq.get(pg.data))
-                        .thenComparingInt(pg -> pg.pid));
-                current.remove(0);
-            }
-
-            // 새로 넣는 Page 객체는 깊은 복사 필요
-            Page copied = new Page();
-            copied.pid = p.pid;
-            copied.data = p.data;
-            copied.status = p.status;
-            copied.loc = -1;  // 나중에 설정
-            current.add(copied);
+            currentMap.put(p.data, p); // 중복 자동 제거 (가장 최근의 Page로 덮어씀)
         }
 
-        // loc 설정
+        // 중복 제거 후 리스트로 변환
+        List<Page> current = new ArrayList<>(currentMap.values());
+
+        // LFU 정렬 후, frame 크기 초과 시 오래된/적게 사용된 것부터 제거
         current.sort(Comparator
-                .comparingInt((Page pg) -> freq.get(pg.data))
-                .thenComparingInt(pg -> pg.pid));
+                .comparingInt((Page p) -> freq.get(p.data))
+                .thenComparingInt(p -> p.pid));
+        while (current.size() > p_frame_size) {
+            current.remove(0);
+        }
+
+        // loc 설정 (1부터 시작)
         for (int i = 0; i < current.size(); i++) {
-            current.get(i).loc = i + 1; // loc는 1-based index
+            current.get(i).loc = i + 1;
         }
 
         return current;
@@ -170,7 +163,24 @@ public class LfuCore implements CorePolicy {
     // 🔽 추가 구현
     @Override
     public Queue<Page> getCurrentFrames() {
-        return new LinkedList<>(frame_window);
+        // 중복 제거를 위해 data 기준으로 필터링
+        Map<Character, Page> uniqueMap = new LinkedHashMap<>();
+        for (Page p : frame_window) {
+            uniqueMap.put(p.data, p); // 중복되면 나중 값으로 덮어씀
+        }
+
+        List<Page> list = new ArrayList<>(uniqueMap.values());
+
+        // 정렬 및 loc 재설정
+        list.sort(Comparator
+                .comparingInt((Page p) -> frequencyMap.getOrDefault(p.data, 0))
+                .thenComparingInt(p -> p.pid));
+
+        for (int i = 0; i < list.size(); i++) {
+            list.get(i).loc = i + 1;
+        }
+
+        return new LinkedList<>(list);
     }
 
     @Override
@@ -181,5 +191,12 @@ public class LfuCore implements CorePolicy {
     @Override
     public int getFrameSize() {
         return p_frame_size;
+    }
+
+    private boolean containsData(List<Page> frames, char data) {
+        for (Page p : frames) {
+            if (p.data == data) return true;
+        }
+        return false;
     }
 }

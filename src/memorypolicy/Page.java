@@ -1,5 +1,7 @@
 package memorypolicy;
 
+import java.util.Objects;
+
 public class Page {
     public static int CREATE_ID = 0;
 
@@ -22,4 +24,18 @@ public class Page {
         this.data = data;
         this.status = status;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Page page = (Page) obj;
+        return data == page.data;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(data);
+    }
+
 }
