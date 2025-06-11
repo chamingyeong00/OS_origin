@@ -25,6 +25,25 @@ public class ScCore implements CorePolicy {
     }
 
     @Override
+    public List<Page> getFrameStateAtStep(int step) {
+        if (step >= frameSnapshots.size()) return new ArrayList<>();
+
+        List<Character> snapshot = frameSnapshots.get(step);
+        List<Page> result = new ArrayList<>();
+
+        for (int i = 0; i < snapshot.size(); i++) {
+            Character c = snapshot.get(i);
+            if (c == null) continue;
+            Page p = new Page();
+            p.data = c;
+            p.loc = i + 1;
+            result.add(p);
+        }
+
+        return result;
+    }
+
+    @Override
     public Page.STATUS operate(char dataChar) {
         currentTime++;
         int pageNum = dataChar;

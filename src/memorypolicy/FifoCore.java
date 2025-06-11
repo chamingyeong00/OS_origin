@@ -86,4 +86,18 @@ public class FifoCore implements CorePolicy {
     public int getFrameSize() {
         return p_frame_size;
     }
+    @Override
+    public List<Page> getFrameStateAtStep(int step) {
+        Queue<Page> sim = new LinkedList<>();
+        for (int i = 0; i <= step && i < pageHistory.size(); i++) {
+            Page p = pageHistory.get(i);
+            if (sim.stream().anyMatch(pg -> pg.data == p.data)) {
+                continue;
+            }
+            if (sim.size() == p_frame_size) sim.poll();
+            sim.offer(p);
+        }
+        return new ArrayList<>(sim);
+    }
+
 }

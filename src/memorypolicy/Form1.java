@@ -1,10 +1,12 @@
 package memorypolicy;
 
 import javax.swing.*;
+import java.util.List;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
@@ -260,7 +262,7 @@ public class Form1 extends JFrame {
         }
     }
 
-    class DrawPanel extends JPanel {
+    static class DrawPanel extends JPanel {
         private CorePolicy core;
         private int windowSize;
         private int dataLength;
@@ -270,12 +272,26 @@ public class Form1 extends JFrame {
             this.windowSize = windowSize;
             this.dataLength = dataLength;
         }
-
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
+
             if (core == null) return;
 
+            System.out.println("====== DEBUG DRAW START ======");
+            System.out.println("Frame Size (core.getFrameSize()) = " + core.getFrameSize());
+            System.out.println("Cursor (core.getCursor()) = " + core.getCursor());
+            System.out.println("Current Frames (core.getCurrentFrames()) = ");
+            for (Page p : core.getCurrentFrames()) {
+                System.out.printf("  [pid=%d, data=%c, loc=%d, status=%s]\n", p.pid, p.data, p.loc, p.status);
+            }
+            System.out.println("Page History (core.getPageHistory()) = ");
+            for (Page p : core.getPageHistory()) {
+                System.out.printf("  [Step] pid=%d, data=%c, loc=%d, status=%s\n", p.pid, p.data, p.loc, p.status);
+            }
+            System.out.println("====== DEBUG DRAW END ======");
+
+            // 기존 코드 유지
             Graphics2D g2d = (Graphics2D) g;
             g2d.setColor(Color.BLACK);
             g2d.fillRect(0, 0, getWidth(), getHeight());
@@ -286,42 +302,46 @@ public class Form1 extends JFrame {
             int gridSpace = 5;
 
             for (int i = 0; i < dataLength; i++) {
-                int pseudoCursor = core.getPageHistory().get(i).loc;
-                char data = core.getPageHistory().get(i).data;
-                Page.STATUS status = core.getPageHistory().get(i).status;
+                List<Page> frameAtStep = core.getFrameStateAtStep(i);
 
-                switch (status) {
-                    case PAGEFAULT -> pseudoQueue.add(data);
-                    case MIGRATION -> {
-                        if (!pseudoQueue.isEmpty()) pseudoQueue.poll();
-                        pseudoQueue.add(data);
-                    }
-                }
-
-                for (int j = 0; j <= windowSize; j++) {
+                // draw frame box
+                for (int j = 0; j < windowSize; j++) {
                     int x = i * (gridSize + gridSpace);
-                    int y = j * gridSize;
+                    int y = (j + 1) * gridSize; // 0번째 줄은 데이터 레이블
 
-                    if (j == 0) {
-                        drawGridText(g2d, x, y, gridSize, data);
-                    } else {
-                        drawGrid(g2d, x, y, gridSize);
-                    }
+                    drawGrid(g2d, x, y, gridSize);
                 }
 
+                // draw labels (reference string)
+                Page histPage = core.getPageHistory().get(i);
+                int labelX = i * (gridSize + gridSpace);
+                int labelY = 0;
+                drawGridText(g2d, labelX, labelY, gridSize, histPage.data);
+
+                // draw current frame contents
+                for (int j = 0; j < frameAtStep.size(); j++) {
+                    Page page = frameAtStep.get(j);
+                    int x = i * (gridSize + gridSpace);
+                    int y = (j + 1) * gridSize;
+                    drawGridText(g2d, x, y, gridSize, page.data);
+                }
+
+                // draw highlight on the actual accessed frame
                 int highlightX = i * (gridSize + gridSpace);
-                int highlightY = (pseudoCursor) * gridSize;
+                int highlightY = histPage.loc * gridSize;
 
-                drawGridHighlight(g2d, highlightX, highlightY, gridSize, status);
+                drawGridHighlight(g2d, highlightX, highlightY, gridSize, histPage.status);
 
-                int depth = 1;
-                for (char c : pseudoQueue) {
-                    int tx = i * (gridSize + gridSpace);
-                    int ty = depth * gridSize;
-                    drawGridText(g2d, tx, ty, gridSize, c);
-                    depth++;
-                }
+                drawGridText(g2d, highlightX, highlightY, gridSize, histPage.data);
             }
+
+        }
+
+        private String colorToString(Color color) {
+            if (Color.GREEN.equals(color)) return "GREEN";
+            if (Color.RED.equals(color)) return "RED";
+            if (new Color(128, 0, 128).equals(color)) return "PURPLE";
+            return "UNKNOWN";
         }
 
         private void drawGrid(Graphics2D g, int x, int y, int size) {
@@ -335,6 +355,9 @@ public class Form1 extends JFrame {
                 case MIGRATION -> new Color(128, 0, 128);
                 case PAGEFAULT -> Color.RED;
             };
+            // 디버깅 로그
+            System.out.printf("  → Drawing %s box at (%d, %d), size=%d\n", colorToString(color), x, y, size);
+
             g.setColor(color);
             g.fillRect(x, y, size, size);
         }

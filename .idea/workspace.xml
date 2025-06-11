@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="973eca61-ab5f-4061-8ea9-a23553f1e71b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/memorypolicy/DrawPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="973eca61-ab5f-4061-8ea9-a23553f1e71b" name="Changes" comment="Changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/memorypolicy/Core.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/memorypolicy/CorePolicy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/memorypolicy/CorePolicy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/memorypolicy/DrawPanel.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/memorypolicy/FifoCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/memorypolicy/FifoCore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/memorypolicy/Form1.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/memorypolicy/Form1.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/memorypolicy/LfuCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/memorypolicy/LfuCore.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/memorypolicy/ScCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/memorypolicy/ScCore.java" afterDir="false" />
     </list>
@@ -43,29 +42,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Form1.executor": "Run",
-    "Application.Program.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/chamingyeong/GitHub/OS_origin",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/dw_42/IdeaProjects/OS/src/Main.java",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true",
-    "애플리케이션.Form1.executor": "Run",
-    "애플리케이션.Program.executor": "Run"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Form1.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Program.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/chamingyeong/GitHub/OS_origin&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/dw_42/IdeaProjects/OS/src/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
+    &quot;애플리케이션.Form1.executor&quot;: &quot;Run&quot;,
+    &quot;애플리케이션.Program.executor&quot;: &quot;Run&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="Program" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="memorypolicy.Program" />
@@ -89,8 +89,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
-        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
       </set>
     </attachedChunks>
   </component>
@@ -112,21 +112,12 @@
       <workItem from="1749015337816" duration="2601000" />
       <workItem from="1749100413776" duration="12000" />
       <workItem from="1749299431810" duration="6986000" />
+      <workItem from="1749370279719" duration="120000" />
+      <workItem from="1749620735977" duration="6267000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/memorypolicy/Form1.java</url>
-          <line>260</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

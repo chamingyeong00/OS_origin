@@ -15,4 +15,5 @@ public interface CorePolicy {
     Queue<Page> getCurrentFrames();
     int getCursor();
     int getFrameSize();
+    List<Page> getFrameStateAtStep(int step);
 }
